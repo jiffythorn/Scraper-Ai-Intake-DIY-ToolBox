@@ -101,4 +101,4 @@ No blocks, no ISP risk, no C&D risk — just open data and a CSV.
 ---
 
 **Prefer someone else carries the risk and does it right?**
-[MrTsComputers.com](https://www.mrtscomputers.top)
+[MrTsComputers.com](https://www.mrtscomputers.com)
