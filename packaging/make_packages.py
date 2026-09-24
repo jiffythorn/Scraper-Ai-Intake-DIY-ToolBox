@@ -109,8 +109,7 @@ def main() -> None:
     all_prefixes = [p for _n, ps in PRODUCTS for p in ps] + ["legal",
                                                              "packaging"]
     zpath = OUT / f"complete-toolbox-v{ver}.zip"
-    n = write_zip(zpath, all_prefixes, SHARED_FILES + ["SALES-COPY.md",
-                                                       "CONTRIBUTING.md",
+    n = write_zip(zpath, all_prefixes, SHARED_FILES + ["CONTRIBUTING.md",
                                                        ".gitignore"])
     kb = zpath.stat().st_size / 1024
     print(f"  {zpath.name:44s} {n:4d} files  {kb:8.1f} KB")

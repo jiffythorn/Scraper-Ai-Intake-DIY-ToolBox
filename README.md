@@ -14,7 +14,6 @@ legal/                  LICENSE · DISCLAIMER · TERMS · PRIVACY · SCRAPING-10
 03-n8n-intake-blueprint/ One-page site intake → Sheets → Discord → email (n8n JSON)
 GETTING-STARTED.md      Windows / macOS / Linux / ChromeOS install walkthrough
 WALKTHROUGH.md          Zero-to-first-success, hand-holding, assumes nothing
-SALES-COPY.md           Product pages & funnel copy
 SERVICES.md             "Or hire us" — custom build & setup services
 CONTRIBUTING.md         How custom client work feeds back into this repo
 ```

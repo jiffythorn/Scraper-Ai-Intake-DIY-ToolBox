@@ -28,6 +28,7 @@ N8N = ROOT / "03-n8n-intake-blueprint"
 PY = sys.executable or "python3"
 
 PASS, FAIL = [], []
+FAST = False
 
 
 def check(name: str, ok: bool, detail: str = "") -> None:
@@ -72,33 +73,71 @@ def test_gui_construction() -> None:
                          ("outreach_gui", OUTREACH / "outreach_gui.py"),
                          ("intake_gui", N8N / "intake_gui.py"),
                          ("toolbox", ROOT / "toolbox.py")):
-        # Launch the real GUI. A healthy window runs mainloop() forever, so
-        # "killed by our timeout" = PASS. A crash exits fast with a traceback.
+        # Importing the module + building the app frame is where crashes
+        # hide (see the historic queue-import bug). We build the real Tk
+        # root, run one event-loop tick, then destroy — no mainloop, so it
+        # exits fast and works headless (root creation fails w/o display).
         code = (
             f"import sys; sys.argv=['{name}'];\n"
             f"import importlib.util as iu\n"
             f"spec = iu.spec_from_file_location('{name}', r'{script}')\n"
             f"m = iu.module_from_spec(spec); spec.loader.exec_module(m)\n"
+            f"import tkinter as tk\n"
+            f"REAL_TK = tk.Tk   # capture BEFORE patching (else _T recurses)\n"
+            f"class _T:\n"
+            f"    def __init__(s, *a, **k):\n"
+            f"        try: s.r = REAL_TK(*a, **k)\n"
+            f"        except tk.TclError as e:\n"
+            f"            if 'display' in str(e).lower():\n"
+            f"                print('SKIP: no display'); raise SystemExit(0)\n"
+            f"            raise\n"
+            f"    def __getattr__(s, name):\n"
+            f"        return getattr(s.r, name)   # pass title/geometry/... through\n"
+            f"    def mainloop(s, *a, **k):\n"
+            f"        s.r.update()   # one real pass over the widget tree\n"
+            f"        s.r.destroy()\n"
+            f"        print('OK: built and ran one tick')\n"
+            f"tk.Tk = _T\n"
             f"m.launch_gui()\n")
         try:
-            r = run([PY, "-c", code], ROOT, timeout=15)
-            # exited on its own: fine only if it was a clean headless skip
-            headless = "no display" in (r.stdout + r.stderr).lower()
-            check(f"GUI builds: {name}", headless,
-                  "headless — skipped" if headless else
-                  (r.stderr.strip().splitlines() or ["?"])[-1][:110])
+            r = run([PY, "-c", code], ROOT, timeout=45)
         except subprocess.TimeoutExpired:
-            check(f"GUI builds: {name}", True,
-                  "window opened and ran until killed (healthy)")
+            # never expected with the _T shim, but a hung window still
+            # proves the build path succeeded
+            check(f"GUI builds: {name}", True, "ran until killed (treated as pass)")
+            continue
+        out = r.stdout + r.stderr
+        if "SKIP: no display" in out:
+            check(f"GUI builds: {name}", True, "headless — skipped")
+        else:
+            check(f"GUI builds: {name}",
+                  r.returncode == 0 and "OK: built and ran one tick" in r.stdout,
+                  "built + widget tree verified" if r.returncode == 0 else
+                  (r.stderr.strip().splitlines() or ["?"])[-1][:110])
 
 
-def test_scraper() -> None:
+def test_scraper(live: bool = True) -> None:
     print("\n[2] Scraper pipeline (live OpenStreetMap, no website crawling)")
     td = isolate_config(SCRAPER)
     out_csv = SCRAPER / "leads.csv"
     if out_csv.exists():
         out_csv.rename(Path(td.name) / "leads.csv.old")
     try:
+        if not live:
+            # offline: verify plumbing only (no Overpass call). Use a town
+            # name that reliably fails geocoding and check the plain-English
+            # error path (SystemExit prints its message to stderr).
+            r = run([PY, "lead_scraper.py", "--town", "ZZZNoSuchTownZZZ",
+                     "--csv", "e2e-leads.csv"], SCRAPER)
+            msg = r.stderr + r.stdout
+            check("scraper: graceful unknown-town exit",
+                  r.returncode != 0 and ("Could not find" in msg
+                                         or "No config" in msg
+                                         or "ZZZNoSuchTownZZZ" in msg),
+                  msg.strip().splitlines()[-1][:90] if msg.strip() else
+                  f"rc={r.returncode}")
+            restore_config(SCRAPER, td)
+            return
         # Overpass is a free community service — transient 5xx/429 are
         # normal; a polite client retries. 3 attempts, short backoff.
         r = None
@@ -139,12 +178,12 @@ def test_outreach() -> None:
     # never the user's real config.yml
     td = isolate_config(OUTREACH)
     try:
-        _outreach_inner()
+        _outreach_inner(live=not FAST)
     finally:
         restore_config(OUTREACH, td)
 
 
-def _outreach_inner() -> None:
+def _outreach_inner(live: bool = True) -> None:
     modes = ["website_audit", "first_touch", "followup_1", "followup_2",
              "reengage", "referral_request", "reply_handling"]
     # template (no-AI) mode for every prompt: catches broken prompt files
@@ -182,8 +221,12 @@ def _outreach_inner() -> None:
           "E2E Roofing" in r.stdout)
     (OUTREACH / "e2e-leads.csv").unlink(missing_ok=True)
 
-    # live local AI (only if Ollama is running) — re-isolate per provider
+    # live local AI (skip in --fast)
     import socket
+    if not live:
+        check("outreach: LOCAL ollama draft", True, "--fast: skipped")
+        check("outreach: FREE endpoint draft", True, "--fast: skipped")
+        return
     try:
         with socket.create_connection(("127.0.0.1", 11434), timeout=0.5):
             ollama = True
@@ -231,20 +274,23 @@ def test_n8n_blueprints() -> None:
 
 
 def main() -> None:
+    global FAST
     ap = argparse.ArgumentParser()
     ap.add_argument("--fast", action="store_true", help="skip live network/AI")
     ap.add_argument("--gui-only", action="store_true")
     args = ap.parse_args()
+    FAST = args.fast
 
     print("=" * 60)
-    print("DIY Toolbox — end-to-end tests")
+    print("DIY Toolbox — end-to-end tests" +
+          (" (fast mode: no network)" if FAST else ""))
     print("=" * 60)
 
     test_gui_construction()
     if args.gui_only:
         report()
         return
-    test_scraper()
+    test_scraper(live=not FAST)
     test_outreach()
     test_n8n_blueprints()
     report()

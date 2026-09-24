@@ -172,7 +172,6 @@ legal/SCRAPING-101.md      read before scraping — blocks, ISPs, C&Ds
 legal/TERMS-OF-USE.md      the agreement — arbitration, refund-only remedy
 legal/PRIVACY.md           what we collect (nothing) and what you collect
 legal/THIRD-PARTY-NOTICES.md  license/bundling rules if you resell
-SALES-COPY.md              ready-made product pages (if you resell)
 ```
 
 **The deal, in three sentences:** the software is MIT and yours; you are
