@@ -90,5 +90,4 @@ python3 outreach_runner.py --leads-csv ../01-lead-scraper/leads.csv --row 1 --sa
 **Want this connected to your real inbox and lead flow, tuned to your
 voice?** That's a flat-fee build — **[MrTsComputers.com](https://www.mrtscomputers.com)**
 
-💚 *Saved you time? [Tips keep this free](https://www.mrtscomputers.com) —
-tip button floats on the left of the site.*
+💚 *Saved you time? [Tips keep this free](https://www.mrtscomputers.com/#tips).*

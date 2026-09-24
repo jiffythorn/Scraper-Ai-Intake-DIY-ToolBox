@@ -21,7 +21,7 @@ sys.path.insert(0, str(HERE))
 if (HERE.parent / "toolbox_common.py").exists():
     sys.path.insert(0, str(HERE.parent))
 
-from toolbox_common import (support_bar,
+from toolbox_common import (floating_tip, support_bar,
                             ensure_config, find_doc, gui_doc_buttons,
                             log, open_folder, open_in_editor, open_url,
                             python_exe, show_text_viewer)  # noqa: E402
@@ -280,6 +280,7 @@ def launch_gui() -> None:
     status = ttk.Label(body, text=" | ".join(status_lines()), wraplength=700)
     status.pack(anchor="w", pady=(8, 0))
 
+    floating_tip(root)
     poll()
     root.mainloop()
 

@@ -177,24 +177,40 @@ def show_text_viewer(parent, title: str, path: Path) -> None:
 
 
 SITE = "https://www.mrtscomputers.com"
+# Deep link to the site's tip section (works once the section carries
+# id="tips"; without it, browsers land at the top of the homepage where
+# the floating tip button is visible anyway).
+TIPS_URL = "https://www.mrtscomputers.com/#tips"
 
 
 def support_bar(parent) -> None:
     """Slim footer for every GUI: custom-help link + tip call-to-action.
-    The tip target is the site's floating tip button (Gumroad, Ko-fi,
-    Cash App, Venmo, BTC/ETH/LTC)."""
-    import tkinter as tk
+    The tip target is the site's tip section (Gumroad, Ko-fi, Cash App,
+    Venmo, BTC/ETH/LTC)."""
     from tkinter import ttk
     bar = ttk.Frame(parent)
     bar.pack(fill="x", pady=(6, 0))
     tip = ttk.Label(bar, text="💚 Tip — keeps the free stuff coming",
                     foreground="#1a7f37", cursor="hand2")
     tip.pack(side="right")
-    tip.bind("<Button-1>", lambda _e: open_url(SITE))
+    tip.bind("<Button-1>", lambda _e: open_url(TIPS_URL))
     help_lbl = ttk.Label(bar, text="Custom builds & help: mrtscomputers.com",
                          foreground="#0a58ca", cursor="hand2")
     help_lbl.pack(side="right", padx=(0, 14))
     help_lbl.bind("<Button-1>", lambda _e: open_url(SITE))
+
+
+def floating_tip(root) -> None:
+    """Always-visible floating 💚 Tip button on the window's left edge —
+    mirrors the floating tip button on mrtscomputers.com."""
+    import tkinter as tk
+    btn = tk.Button(root, text="💚 Tip", command=lambda: open_url(TIPS_URL),
+                    bg="#1a7f37", fg="white", activebackground="#166534",
+                    activeforeground="white", relief="flat", cursor="hand2",
+                    borderwidth=0, padx=10, pady=6,
+                    font=("TkDefaultFont", 10, "bold"))
+    btn.place(relx=0.0, rely=0.5, anchor="w", x=4)
+    btn.lift()
 
 
 def gui_doc_buttons(parent, here: Path, items: list[tuple[str, list[str]]],

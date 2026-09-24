@@ -80,8 +80,8 @@ Community support: open an issue in this repo (best effort, no guarantees).
 Everything in this toolbox is free and always will be. If a tool saved you
 real time or money, a tip keeps the free stuff coming:
 
-> **[mrtscomputers.com](https://www.mrtscomputers.com)** — the tip button
-> floats on the left of every page (Gumroad, Ko-fi, Cash App, Venmo,
+> **[mrtscomputers.com/#tips](https://www.mrtscomputers.com/#tips)** — Gumroad,
+> Ko-fi, Cash App, Venmo, BTC/ETH/LTC (Gumroad, Ko-fi, Cash App, Venmo,
 > BTC, ETH, LTC).
 
 No pressure — a ⭐ star or a share helps just as much.

@@ -25,7 +25,7 @@ sys.path.insert(0, str(HERE))
 if (HERE.parent / "toolbox_common.py").exists():
     sys.path.insert(0, str(HERE.parent))
 
-from toolbox_common import (support_bar,
+from toolbox_common import (floating_tip, support_bar,
                             find_doc, gui_doc_buttons, log, open_folder,
                             open_in_editor, open_url,
                             show_text_viewer)  # noqa: E402
@@ -302,6 +302,7 @@ def launch_gui() -> None:
 
     for line in status_lines():
         write(line)
+    floating_tip(root)
     poll()
     root.mainloop()
 
