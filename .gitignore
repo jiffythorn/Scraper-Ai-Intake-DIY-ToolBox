@@ -1,0 +1,43 @@
+# Secrets & local config
+config.yml
+config.local.yml
+*.local.json
+.env
+.env.*
+secrets*
+gumroad-auth.log
+.freebuff/
+
+# Build artifacts (rebuild with: python3 packaging/make_packages.py)
+dist-packages/
+build/
+*.spec
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Node (n8n helper bits)
+node_modules/
+
+# Output data — never commit scraped or generated leads
+*.csv
+!sample-leads.csv
+out/
+output/
+drafts/
+sent/
+state/
+*.sqlite
+*.db
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.idea/
+.vscode/

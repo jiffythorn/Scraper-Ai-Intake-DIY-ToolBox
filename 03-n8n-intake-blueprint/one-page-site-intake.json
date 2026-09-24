@@ -1,0 +1,147 @@
+{
+  "name": "Mr T's One-Page Site Intake",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Get Your Free Quote",
+        "formDescription": "Tell us what you need — we reply within one business day. No spam, ever.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Your name",
+              "placeholder": "Jane Doe",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "placeholder": "jane@example.com",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Business name",
+              "placeholder": "Riverbend Roofing",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "What do you need?",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  { "option": "A brand-new one-page website" },
+                  { "option": "A refresh of my current site" },
+                  { "option": "Fixes, speed & maintenance" },
+                  { "option": "Something else / not sure" }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Phone (optional)",
+              "placeholder": "+1 555 010 0000"
+            },
+            {
+              "fieldLabel": "Tell us about your project",
+              "fieldType": "textarea",
+              "placeholder": "Two or three sentences is plenty."
+            },
+            {
+              "fieldLabel": "It's OK to email me a reply and occasional tips (no spam, unsubscribe anytime)",
+              "fieldType": "checkbox"
+            }
+          ]
+        },
+        "responseMode": "responseNode"
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000001",
+      "name": "n8n Form Trigger",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 1.1,
+      "position": [0, 0],
+      "webhookId": "replace-me-form-webhook-id",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "PASTE_YOUR_GOOGLE_SHEET_ID",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "PASTE_YOUR_SHEET_TAB_GID_OR_NAME",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "matchingColumns": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0002-4000-8000-000000000002",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.4,
+      "position": [220, 0],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "=🎯 New intake: {{ $('n8n Form Trigger').item.json['Your name'] }} at {{ $('n8n Form Trigger').item.json['Business name'] }} — wants: {{ $('n8n Form Trigger').item.json['What do you need?'] }} — email: {{ $('n8n Form Trigger').item.json['Email'] }}",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0003-4000-8000-000000000003",
+      "name": "Discord",
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 1.1,
+      "position": [440, 0],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('n8n Form Trigger').item.json['Email'] }}",
+        "subject": "Thanks — your request is in!",
+        "message": "=Hi {{ $('n8n Form Trigger').item.json['Your name'] }},\n\nGot your request about \"{{ $('n8n Form Trigger').item.json['What do you need?'] }}\" — thanks!\n\nA real person (me, not a bot) will get back to you within one business day with a couple of concrete suggestions.\n\nTalk soon,\nYOUR NAME\nYOUR BUSINESS — YOUR PHONE\n\nYou're receiving this because you submitted our quote form. Not you? Just reply and we'll sort it out.",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0004-4000-8000-000000000004",
+      "name": "Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [660, 0],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=Thanks, {{ $('n8n Form Trigger').item.json['Your name'] }}! Your request is in — you'll hear from us within one business day."
+      },
+      "id": "a1b2c3d4-0005-4000-8000-000000000005",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [880, 0]
+    }
+  ],
+  "connections": {
+    "n8n Form Trigger": {
+      "main": [[ { "node": "Google Sheets", "type": "main", "index": 0 } ]]
+    },
+    "Google Sheets": {
+      "main": [[ { "node": "Discord", "type": "main", "index": 0 } ]]
+    },
+    "Discord": {
+      "main": [[ { "node": "Gmail", "type": "main", "index": 0 } ]]
+    },
+    "Gmail": {
+      "main": [[ { "node": "Respond to Webhook", "type": "main", "index": 0 } ]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}

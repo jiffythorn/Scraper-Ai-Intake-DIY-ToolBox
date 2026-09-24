@@ -1,0 +1,2 @@
+name,category,address,phone,email,email_source,website,lat,lon,osm_id,source
+Example Roofing Co,roofer,"123 Sample St, Sampletown, 00000",+1-555-0100,info@exampleroofing.example,https://exampler oofing.example,35.5951,-82.5515,node/0000000,OpenStreetMap © OpenStreetMap contributors (ODbL)

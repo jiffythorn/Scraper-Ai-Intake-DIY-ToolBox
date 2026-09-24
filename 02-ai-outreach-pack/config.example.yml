@@ -1,0 +1,60 @@
+# Mr T's AI Outreach — configuration
+# Copy to config.yml and edit. Every value here is YOU, the sender.
+#   cp config.example.yml config.yml
+
+# --- YOU (this is who the email is from — required, it's the law) ----------
+sender_name: Sam Example
+sender_business: Example Web Services
+sender_phone: +1-555-0100
+sender_email: sam@examplewebservices.example
+
+# Appended to every draft. Edit the wording, never delete the concept.
+opt_out_line: Not relevant? Reply "no thanks" and I won't email again.
+
+# --- WHERE THE AI RUNS -------------------------------------------------------
+#   provider: ollama             -> LOCAL: private, free, nothing leaves your
+#                                   machine. The default and the recommendation.
+#   provider: openai_compatible  -> CLOUD: any OpenAI-style API (see below)
+#   provider: anthropic          -> CLOUD: Claude direct
+#
+# Cloud tradeoff, in one line: your lead data and prompts go to that provider
+# under THEIR privacy policy. Local keeps everything on your machine.
+provider: ollama
+
+# Model name for the chosen provider:
+#   Set `model: auto` to always use the provider's best free/default model.
+#   On EVERY run the tool fetches the provider's LIVE model list: your
+#   choice is kept if still offered, otherwise a free/available model is
+#   picked automatically — so a renamed or retired model never breaks you.
+#   ollama:             llama3.1:8b  (run `ollama pull llama3.1:8b` first)
+#   free:               openai (sensible default), or `auto`
+#   openai_compatible:  gpt-4o-mini, llama-3.3-70b-versatile, ...
+#   anthropic:          claude-3-5-haiku-latest, claude-sonnet-4-5, ...
+model: openai
+temperature: 0.7
+
+# --- CLOUD SETTINGS (only used when provider != ollama) -----------------------
+# openai_compatible base_url + model examples (model names change; check the
+# provider's docs — these were correct at publication):
+#
+#   OpenAI:            https://api.openai.com/v1                              gpt-4o-mini
+#   Groq (free tier):  https://api.groq.com/openai/v1                         llama-3.3-70b-versatile
+#   OpenRouter:        https://openrouter.ai/api/v1                           (hundreds of models, some free)
+#   Google AI Studio:  https://generativelanguage.googleapis.com/v1beta/openai  gemini-2.0-flash
+#   DeepSeek:          https://api.deepseek.com/v1                            deepseek-chat
+#   Mistral:           https://api.mistral.ai/v1                              mistral-small-latest
+#
+# API key: put it here literally, OR (recommended) reference an environment
+# variable so the secret never sits in a file:
+#   api_key: env:OPENAI_API_KEY
+#   api_key: env:ANTHROPIC_API_KEY
+# base_url and api_key are ignored in ollama mode.
+# base_url: https://api.groq.com/openai/v1
+# api_key: env:OPENAI_API_KEY
+
+# --- SUBJECT ----------------------------------------------------------------
+# {business_name} is replaced automatically
+subject_template: Quick idea for {business_name}
+
+# --- TONE -------------------------------------------------------------------
+tone: friendly, plain-spoken, no hype

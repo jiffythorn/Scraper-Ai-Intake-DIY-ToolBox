@@ -1,0 +1,9 @@
+# Sample lead — obviously fake business, for testing the runner.
+# Real leads come from ../01-lead-scraper/leads.csv via --leads-csv.
+
+business_name: Riverbend Roofing
+category: roofer
+town: Asheville, NC
+their_website: https://riverbend-roofing.example
+their_phone: +1-555-0101
+notes: Website footer has no phone number; gallery loads slowly on mobile.

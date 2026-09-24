@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--
+  Mr T's DIY Toolbox — drop-in intake section for any one-page website.
+  Open this file directly, or copy the <section> below into your existing
+  one-pager. It embeds YOUR n8n form — edit FORM_URL first.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Intake Form — Drop-In Snippet</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; background: #f6f7f9; }
+    .intake { max-width: 720px; margin: 2rem auto; padding: 2rem 1rem; }
+    .intake h2 { margin: 0 0 .5rem; font-size: 1.6rem; }
+    .intake p  { margin: 0 0 1.25rem; color: #444; }
+    .frame { width: 100%; height: 900px; border: 0; border-radius: 12px;
+             background: #fff; box-shadow: 0 6px 24px rgba(0,0,0,.08); }
+    .fallback { display: inline-block; margin-top: 1rem; color: #0a58ca; }
+  </style>
+</head>
+<body>
+
+<section class="intake" id="quote">
+  <h2>Get a free quote</h2>
+  <p>Tell us what you need — a real person replies within one business day.
+     No spam, unsubscribe anytime.</p>
+
+  <!-- 1) Put your n8n Form Trigger PRODUCTION URL here -->
+  <!-- 2) Done. Submissions flow into your Sheet / Discord / email.        -->
+  <iframe class="frame"
+          src="PASTE_YOUR_N8N_FORM_URL_HERE"
+          title="Quote request form"
+          loading="lazy"></iframe>
+
+  <!-- Iframes blocked somewhere? Keep a plain link as backup: -->
+  <a class="fallback" href="PASTE_YOUR_N8N_FORM_URL_HERE">Prefer a full
+     page? Open the form here →</a>
+</section>
+
+<!--
+  PRIVACY NOTE (you're the data controller!): link your privacy policy next
+  to this form and say what happens to submissions. See ../legal/PRIVACY.md
+  for a starting point.
+-->
+
+</body>
+</html>
