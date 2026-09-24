@@ -176,6 +176,27 @@ def show_text_viewer(parent, title: str, path: Path) -> None:
                                                            padx=8, pady=6)
 
 
+SITE = "https://www.mrtscomputers.com"
+
+
+def support_bar(parent) -> None:
+    """Slim footer for every GUI: custom-help link + tip call-to-action.
+    The tip target is the site's floating tip button (Gumroad, Ko-fi,
+    Cash App, Venmo, BTC/ETH/LTC)."""
+    import tkinter as tk
+    from tkinter import ttk
+    bar = ttk.Frame(parent)
+    bar.pack(fill="x", pady=(6, 0))
+    tip = ttk.Label(bar, text="💚 Tip — keeps the free stuff coming",
+                    foreground="#1a7f37", cursor="hand2")
+    tip.pack(side="right")
+    tip.bind("<Button-1>", lambda _e: open_url(SITE))
+    help_lbl = ttk.Label(bar, text="Custom builds & help: mrtscomputers.com",
+                         foreground="#0a58ca", cursor="hand2")
+    help_lbl.pack(side="right", padx=(0, 14))
+    help_lbl.bind("<Button-1>", lambda _e: open_url(SITE))
+
+
 def gui_doc_buttons(parent, here: Path, items: list[tuple[str, list[str]]],
                     root_win) -> None:
     """Row of buttons opening docs via the viewer. items = (label, [filenames])"""

@@ -22,4 +22,7 @@ FIRST STOP FOR HELP
 Updates: your purchase includes updates for 90 days — see TERMS-OF-USE
 section 4. Need it done for you? https://www.mrtscomputers.com
 
+💚 Tips keep the free stuff coming: https://www.mrtscomputers.com
+   (tip button floats on the left of every page)
+
 © Mr T's Computers — MIT licensed. Read legal/LICENSE.

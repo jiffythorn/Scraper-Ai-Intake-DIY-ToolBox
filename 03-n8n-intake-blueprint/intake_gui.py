@@ -25,7 +25,8 @@ sys.path.insert(0, str(HERE))
 if (HERE.parent / "toolbox_common.py").exists():
     sys.path.insert(0, str(HERE.parent))
 
-from toolbox_common import (find_doc, gui_doc_buttons, log, open_folder,
+from toolbox_common import (support_bar,
+                            find_doc, gui_doc_buttons, log, open_folder,
                             open_in_editor, open_url,
                             show_text_viewer)  # noqa: E402
 
@@ -295,6 +296,7 @@ def launch_gui() -> None:
         ("LICENSE (MIT)", ["LICENSE"]),
     ], root)
 
+    support_bar(body)
     status = ttk.Label(body, text=" | ".join(status_lines()), wraplength=700)
     status.pack(anchor="w", pady=(8, 0))
 

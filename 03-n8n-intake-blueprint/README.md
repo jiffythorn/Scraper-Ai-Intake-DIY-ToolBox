@@ -64,3 +64,6 @@ variant, [contribute it back](../CONTRIBUTING.md).
 
 **Don't want to touch n8n at all?** We install, brand, and monitor this
 exact pipeline — **[MrTsComputers.com](https://www.mrtscomputers.com)**
+
+💚 *Saved you time? [Tips keep this free](https://www.mrtscomputers.com) —
+tip button floats on the left of the site.*

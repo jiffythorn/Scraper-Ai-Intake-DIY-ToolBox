@@ -21,7 +21,8 @@ sys.path.insert(0, str(HERE))
 if (HERE.parent / "toolbox_common.py").exists():
     sys.path.insert(0, str(HERE.parent))
 
-from toolbox_common import (ensure_config, find_doc, gui_doc_buttons,
+from toolbox_common import (support_bar,
+                            ensure_config, find_doc, gui_doc_buttons,
                             log, open_in_editor, open_url, python_exe,
                             run_stream, show_text_viewer)  # noqa: E402
 
@@ -210,6 +211,7 @@ def launch_gui() -> None:
         ("THIRD-PARTY NOTICES", ["THIRD-PARTY-NOTICES.md"]),
     ], root)
 
+    support_bar(body)
     status = ttk.Label(body, text=" | ".join(status_lines()), wraplength=700)
     status.pack(anchor="w", pady=(8, 0))
 

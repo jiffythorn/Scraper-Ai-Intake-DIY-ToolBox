@@ -80,3 +80,6 @@ welcome. Blocked or rate-limited access = your own fault.
 
 **DIY not your thing?** We install, tune, and maintain this for your exact
 market — **[MrTsComputers.com](https://www.mrtscomputers.com)**
+
+💚 *Saved you time? [Tips keep this free](https://www.mrtscomputers.com) —
+tip button floats on the left of the site.*
